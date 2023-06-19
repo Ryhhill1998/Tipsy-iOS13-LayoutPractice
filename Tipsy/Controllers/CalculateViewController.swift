@@ -69,6 +69,8 @@ class CalculateViewController: UIViewController {
         if segue.identifier == "goToResult" {
             let destinationVC = segue.destination as! ResultViewController
             destinationVC.splitBill = splitBill
+            destinationVC.split = Int(splitStepper.value)
+            destinationVC.tip = Int((tip ?? 0) * 100)
         }
     }
 }

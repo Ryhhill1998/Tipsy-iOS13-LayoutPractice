@@ -11,6 +11,8 @@ import UIKit
 class ResultViewController: UIViewController {
     
     var splitBill: Double?
+    var split: Int?
+    var tip: Int?
     
     @IBOutlet weak var splitBillLabel: UILabel!
     @IBOutlet weak var billDescriptionLabel: UILabel!
@@ -19,21 +21,10 @@ class ResultViewController: UIViewController {
         super.viewDidLoad()
 
         splitBillLabel.text = "\(round((splitBill ?? 0.0) * 100) / 100)"
+        billDescriptionLabel.text = "Split between \(split ?? 0) people, with \(tip ?? 0)% tip."
     }
     
     @IBAction func recalculatePressed(_ sender: UIButton) {
         dismiss(animated: true)
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
