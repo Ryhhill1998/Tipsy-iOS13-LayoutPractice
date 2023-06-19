@@ -8,9 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class CalculateViewController: UIViewController {
     
     var tip: Double?
+    var splitBill: Double?
     
     @IBOutlet weak var billTextField: UITextField!
     @IBOutlet weak var splitLabel: UILabel!
@@ -59,8 +60,16 @@ class ViewController: UIViewController {
         guard let totalBillText = billTextField.text else { return }
         guard let totalBill = Double(totalBillText) else { return }
         let billPlusTip = totalBill * (1 + (tip ?? 0.0))
-        let splitBill = billPlusTip / splitStepper.value
-        print(splitBill)
+        splitBill = billPlusTip / splitStepper.value
+        
+        performSegue(withIdentifier: "goToResult", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToResult" {
+            let destinationVC = segue.destination as! ResultViewController
+            destinationVC.splitBill = splitBill
+        }
     }
 }
 
