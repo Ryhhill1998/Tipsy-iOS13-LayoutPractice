@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var tip: Float?
+    var tip: Double?
     
     @IBOutlet weak var billTextField: UITextField!
     @IBOutlet weak var splitLabel: UILabel!
@@ -19,9 +19,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var tip10Button: UIButton!
     @IBOutlet weak var tip20Button: UIButton!
     
+    @IBOutlet weak var splitStepper: UIStepper!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         resetTipButtons()
+        tip0Button.isSelected = true
     }
     
     func resetTipButtons() {
@@ -30,10 +33,22 @@ class ViewController: UIViewController {
         tip20Button.isSelected = false
     }
     
-    @IBAction func tipPressed(_ sender: UIButton) {
+    @IBAction func tip0Pressed(_ sender: UIButton) {
         resetTipButtons()
-        tip = (Float(sender.titleLabel!.text!.components(separatedBy: "%")[0]) ?? 0.0) / 100.0
-        sender.isSelected = true
+        tip = 0.0
+        tip0Button.isSelected = true
+    }
+    
+    @IBAction func tip10Pressed(_ sender: UIButton) {
+        resetTipButtons()
+        tip = 0.1
+        tip10Button.isSelected = true
+    }
+    
+    @IBAction func tip20Pressed(_ sender: UIButton) {
+        resetTipButtons()
+        tip = 0.2
+        tip20Button.isSelected = true
     }
     
     @IBAction func splitChanged(_ sender: UIStepper) {
@@ -41,8 +56,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction func calculatePressed(_ sender: UIButton) {
-        let totalBill = (Float(billTextField.text! ) ?? 0.0) * (1 + (tip ?? 0.0))
-        print(totalBill)
+        guard let totalBillText = billTextField.text else { return }
+        guard let totalBill = Double(totalBillText) else { return }
+        let billPlusTip = totalBill * (1 + (tip ?? 0.0))
+        let splitBill = billPlusTip / splitStepper.value
+        print(splitBill)
     }
 }
 
