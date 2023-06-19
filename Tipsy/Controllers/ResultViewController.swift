@@ -10,9 +10,8 @@ import UIKit
 
 class ResultViewController: UIViewController {
     
-    var splitBill: Double?
-    var split: Int?
-    var tip: Int?
+    var resultValue: Double?
+    var resultDescription: String?
     
     @IBOutlet weak var splitBillLabel: UILabel!
     @IBOutlet weak var billDescriptionLabel: UILabel!
@@ -20,8 +19,8 @@ class ResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        splitBillLabel.text = "\(round((splitBill ?? 0.0) * 100) / 100)"
-        billDescriptionLabel.text = "Split between \(split ?? 0) people, with \(tip ?? 0)% tip."
+        splitBillLabel.text = "\(resultValue ?? 0.0)"
+        billDescriptionLabel.text = resultDescription
     }
     
     @IBAction func recalculatePressed(_ sender: UIButton) {

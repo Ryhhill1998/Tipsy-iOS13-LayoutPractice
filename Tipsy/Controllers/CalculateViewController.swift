@@ -12,6 +12,7 @@ class CalculateViewController: UIViewController {
     
     var tip: Double?
     var splitBill: Double?
+    var calculatorBrain = CalculatorBrain()
     
     @IBOutlet weak var billTextField: UITextField!
     @IBOutlet weak var splitLabel: UILabel!
@@ -36,31 +37,32 @@ class CalculateViewController: UIViewController {
     
     @IBAction func tip0Pressed(_ sender: UIButton) {
         resetTipButtons()
-        tip = 0.0
+        calculatorBrain.setTip(tip: 0.0)
         tip0Button.isSelected = true
     }
     
     @IBAction func tip10Pressed(_ sender: UIButton) {
         resetTipButtons()
-        tip = 0.1
+        calculatorBrain.setTip(tip: 10.0)
         tip10Button.isSelected = true
     }
     
     @IBAction func tip20Pressed(_ sender: UIButton) {
         resetTipButtons()
-        tip = 0.2
+        calculatorBrain.setTip(tip: 20.0)
         tip20Button.isSelected = true
     }
     
     @IBAction func splitChanged(_ sender: UIStepper) {
-        splitLabel.text = "\(Int(sender.value))"
+        let split = sender.value
+        splitLabel.text = "\(Int(split))"
+        calculatorBrain.setSplit(split: split)
     }
     
     @IBAction func calculatePressed(_ sender: UIButton) {
         guard let totalBillText = billTextField.text else { return }
         guard let totalBill = Double(totalBillText) else { return }
-        let billPlusTip = totalBill * (1 + (tip ?? 0.0))
-        splitBill = billPlusTip / splitStepper.value
+        calculatorBrain.calculateBill(bill: totalBill)
         
         performSegue(withIdentifier: "goToResult", sender: self)
     }
@@ -68,9 +70,8 @@ class CalculateViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToResult" {
             let destinationVC = segue.destination as! ResultViewController
-            destinationVC.splitBill = splitBill
-            destinationVC.split = Int(splitStepper.value)
-            destinationVC.tip = Int((tip ?? 0) * 100)
+            destinationVC.resultValue = calculatorBrain.getResultValue()
+            destinationVC.resultDescription = calculatorBrain.getResultDescription()
         }
     }
 }
